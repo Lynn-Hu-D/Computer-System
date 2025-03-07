@@ -1,0 +1,10 @@
+This is the instruction of how to compile and run the program to get expected output.
+1. Open terminal and `cd` to the directory that contains the README file
+2. Run `make` in terminal to compile and build executables
+3. Run `./genrandstrings` to output a txt file called "random_strings.txt" which contains 10000 strings with length between 5 to 10 characters.
+4. Run `./read_and_cipher` to load the all strings from "random_strings.txt" into a queue and create 100 child processes to cipher 100 strings at a time. Each child process will output a file which contains 100 encrypted strings.
+5. Verify correctness: 
+
+    - Check there should be **100** output txt files, named from `output_cipher_0.txt` - `output_cipher_99.txt`. 
+    
+    - And randomly pick a file and open it. It should contains **100 lines of encrypted strings**. 
