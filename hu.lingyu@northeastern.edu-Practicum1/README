@@ -1,0 +1,60 @@
+# Part2: Caching System Design for Message Retrieval
+
+Grading Rubric: https://docs.google.com/spreadsheets/d/1VwPUngwyTjj77Y_s-cDB5Gvu4gK9vcVny4EXtezFcCY/edit?gid=0#gid=0
+
+
+The caching system utilizes a **direct-mapped cache structure** where each cache entry is a `CacheEntry` containing a `Message` object, an identifier, and a timestamp for the last access time.
+
+
+## Cache Structure
+
+The cache is built using the following data structures:
+
+1. **CacheEntry Structure**:
+
+   - Each `CacheEntry` contains:
+     - `id`: A unique identifier for the message.
+     - `message`: A pointer to the actual message.
+     - `last_used`: A timestamp representing when the message was last accessed, which can be useful for **LRU**.
+
+2. **MessageCache Structure**:
+   - The `MessageCache` contains an array of `CacheEntry` entries, with a fixed size of `CACHE_SIZE` (set to 16 in this design).
+   - `next_available`: An integer tracking the index for the next available cache slot. This variable is used for implementing a **FIFO** eviction policy.
+
+
+## Caching Strategy and Lookup
+
+### Direct-Mapped Cache
+
+In this design, the cache is an array, and the lookup strategy used is a **linear search**. While linear search has O(n) time complexity, it is adequate for small caches (in this case, a size of 16) and keeps the implementation simple.
+
+#### Cache Insertion
+
+The `add_msg_to_cache` function performs the following steps:
+
+1. It checks the `next_available` index in the cache.
+2. Inserts the new message into that index.
+3. Updates the `next_available` index, following the **FIFO** replacement policy.
+
+#### Cache Lookup
+
+The `find_msg_in_cache` function performs a **linear search** through the cache. Given that the cache size is small, this search approach remains efficient enough. If the message with the specified `id` is found, it is returned; otherwise, `NULL` is returned.
+
+
+## Alternatives Considered
+
+### 1. **Hash Map (Associative Cache)**
+
+- **Design**: A hash map where the `message_id` is the key, and the `message` is the value.
+- **Why Not Considered**:
+  - A hash map would provide O(1) average time complexity for lookups, but this would introduce complexity in managing hash functions and handling collisions.
+  - For a small cache (16 entries), this complexity is unnecessary. A linear search provides simplicity and suffices for the size of the current cache.
+
+### 2. **Array Sorted by ID (Binary Search)**
+
+- **Design**: The cache could be kept sorted by `message_id` to allow for faster lookup with binary search (O(log N) time complexity).
+- **Why Not Considered**:
+  - Maintaining the sorted order during insertion and deletion would add complexity, especially as messages are frequently added or replaced.
+  - For a small cache, the overhead of sorting isn't justified, and a linear search remains optimal.
+
+
