@@ -1,0 +1,66 @@
+# Remote File System (RFS)
+
+A fault-tolerant, multi-threaded client-server file system that supports remote file manipulation via TCP sockets in C. The system allows clients to connect to a centralized server and perform commands like writing, reading, and deleting files or directories. Additional features like encryption, permissions, and concurrent client handling are also supported.
+
+---
+
+## ✅ Features
+
+- ✅ Write a file from the client to the server  
+- ✅ Read (GET) a file from the server to the client  
+- ✅ Delete a remote file or folder  
+- ✅ Multi-client support using threads  
+- ✅ File permission system (read-only vs read-write)  
+- ✅ Encrypted storage with automatic decryption on read  
+
+---
+
+## 🧑‍💻 Usage
+
+### 🔌 Server
+
+Start the server on a designated port:
+
+```bash
+./server <port>
+
+The server runs continuously, listening for client commands.
+
+### 💻 Client
+
+Run commands using the `rfs` client:
+
+#### Write a File
+
+```bash
+./rfs WRITE <local_file_path> <remote_file_path>
+
+### 📥 Read a File (GET)
+
+Retrieve a file from the server and save it locally:
+
+```bash
+./rfs GET <remote_file_path> <local_file_path>
+
+### 🗑️ Delete a File
+
+Remove a file or directory from the server:
+
+```bash
+./rfs RM <remote_file_path>
+
+```
+
+### 📌 Example Commands
+
+```bash
+./rfs WRITE ./data/report.txt reports/2025/report.txt
+./rfs GET reports/2025/report.txt ./downloads/report.txt
+./rfs RM reports/2025/report.txt
+```
+
+### 🛠️ Build Instructions
+
+```bash
+make all
+
